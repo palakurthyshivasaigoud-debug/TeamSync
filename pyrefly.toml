@@ -1,0 +1,11 @@
+# Pyrefly configuration for TeamSync
+# Points to the correct Python 3.14 interpreter where all packages are installed.
+
+python-interpreter-path = "C:/Python314/python.exe"
+
+# Suppress false-positive errors from SQLAlchemy's dynamic __init__ generation.
+# SQLAlchemy db.Model subclasses accept keyword arguments at runtime via metaclass
+# magic that static type checkers cannot infer without sqlalchemy-stubs installed.
+[errors]
+"unexpected-keyword" = false
+"missing-import" = false

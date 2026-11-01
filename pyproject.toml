@@ -1,0 +1,56 @@
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+exclude = [
+    ".git",
+    "__pycache__",
+    "*.pyc",
+    "database/",
+    "docs/",
+    "instance/",
+]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "B"]
+ignore = [
+    "E501",  # line too long
+    "E701",  # multiple statements on one line
+    "E722",  # bare except
+    "E741",  # ambiguous variable name
+    "B008",  # do not perform function calls in argument defaults
+    "B007",  # loop control variable not used
+    "B905",  # zip without strict
+    "F841",  # unused local variable
+    "W291",  # trailing whitespace
+    "W293",  # blank line contains whitespace
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S101", "F401", "F841"]
+"__init__.py" = ["F401"]
+"frontend/*" = ["F401"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"
+
+[tool.bandit]
+exclude_dirs = ["tests", ".git"]
+skips = ["B101"]  # allow assert
+
+[tool.pyrefly]
+# Use the correct Python 3.14 interpreter where all project packages are installed.
+# Pyrefly defaults to the system Python (3.11 Store) which lacks flask-bcrypt etc.
+python-interpreter-path = "C:/Python314/python.exe"
+
+[tool.pyrefly.errors]
+# SQLAlchemy's declarative base generates __init__ dynamically via metaclass magic.
+# All db.Model(field=value, ...) keyword arguments are valid at runtime but
+# invisible to static analysis — suppress these false positives globally.
+"unexpected-keyword" = false
+# flask-bcrypt, flask-login, and flask-sqlalchemy are installed in Python 3.14
+# site-packages; if Pyrefly resolves the wrong interpreter it raises missing-import.
+"missing-import" = false
